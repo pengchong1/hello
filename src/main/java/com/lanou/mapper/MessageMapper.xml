@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanou.mapper.MessageMapper">
+  <resultMap id="BaseResultMap" type="com.lanou.bean.Message">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="up" jdbcType="INTEGER" property="up" />
+    <result column="down" jdbcType="INTEGER" property="down" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.lanou.bean.Message">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, up, down
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+   <select id="serlectAllmessage" resultMap="BaseResultMap">
+  
+     select * from message
+  
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from message
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from message
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lanou.bean.Message" keyProperty="id" useGeneratedKeys="true">
+    insert into message (id, up, down, 
+      content)
+    values (#{id,jdbcType=INTEGER}, #{up,jdbcType=INTEGER}, #{down,jdbcType=INTEGER}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lanou.bean.Message">
+    insert into message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="up != null">
+        up,
+      </if>
+      <if test="down != null">
+        down,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="up != null">
+        #{up,jdbcType=INTEGER},
+      </if>
+      <if test="down != null">
+        #{down,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lanou.bean.Message">
+    update message
+    <set>
+      <if test="up != null">
+        up = #{up,jdbcType=INTEGER},
+      </if>
+      <if test="down != null">
+        down = #{down,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.lanou.bean.Message">
+    update message
+    set up = #{up,jdbcType=INTEGER},
+      down = #{down,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lanou.bean.Message">
+    update message
+    set up = #{up,jdbcType=INTEGER},
+      down = #{down,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+ 
+</mapper>
